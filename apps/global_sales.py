@@ -15,58 +15,6 @@ import requests
 from copy import deepcopy
 import pandas 
 
-url = 'http://api.weatherapi.com/v1/forecast.json?key=c300eafa74ce4f6486f75424211806&q=London&days=1&aqi=no&alerts=no'
-r = requests.get(url, allow_redirects=True)
-open('weather.json', 'wb').write(r.content)
-
-def cross_join(left, right):
-    new_rows = [] if right else left
-    for left_row in left:
-        for right_row in right:
-            temp_row = deepcopy(left_row)
-            for key, value in right_row.items():
-                temp_row[key] = value
-            new_rows.append(deepcopy(temp_row))
-    return new_rows
-
-
-def flatten_list(data):
-    for elem in data:
-        if isinstance(elem, list):
-            yield from flatten_list(elem)
-        else:
-            yield elem
-
-
-def json_to_dataframe(data_in):
-    def flatten_json(data, prev_heading=''):
-        if isinstance(data, dict):
-            rows = [{}]
-            for key, value in data.items():
-                rows = cross_join(rows, flatten_json(value, prev_heading + '.' + key))
-        elif isinstance(data, list):
-            rows = []
-            for i in range(len(data)):
-                [rows.append(elem) for elem in flatten_list(flatten_json(data[i], prev_heading))]
-        else:
-            rows = [{prev_heading[1:]: data}]
-        return rows
-
-    return pandas.DataFrame(flatten_json(data_in))
-
-with open(os.getcwd() + r'/weather.json') as json_file:
-    json_data = json.load(json_file)
-
-df = json_to_dataframe(json_data)
-df.drop(['location.name', 'location.country', 'location.region', 'location.lat', 'location.lon','location.tz_id', 'location.localtime_epoch', 'location.localtime', 'current.uv'], inplace=True, axis=1)
-df.rename(columns = {'forecast.forecastday.hour.time':'Date_Time', 'forecast.forecastday.hour.temp_c':'Temperature'}, inplace = True)
-df.to_csv('test.csv', mode='w', index=False)
-Data = pd.read_csv(os.getcwd() + r'/test.csv', parse_dates=['Date_Time'], infer_datetime_format=True)
-Data['Date'] = Data.Date_Time.dt.date
-Data['Time'] = Data.Date_Time.dt.time
-Data.drop(['Date_Time'], inplace=True, axis=1)
-Data.to_csv('weather.csv', mode='w', index=False)
-
 url = 'https://api.bmreports.com/BMRS/ROLSYSDEM/v1?APIKey=3pyyl4iymgrn812&ServiceType=xml'
 r = requests.get(url, allow_redirects=True)
 open('demand.xml', 'wb').write(r.content)
@@ -156,34 +104,6 @@ layout = html.Div(
                                     "fixedrange": True,
                                 },
                                 "colorway": ["#17B897"],
-                            },
-                        },
-                    ),
-                    className="card",
-                ),
-              html.Div(
-                    children=dcc.Graph(
-                        id="volume-chart",
-                        config={"displayModeBar": False},
-                        figure={
-                            "data": [
-                                {
-                                    "x": data2["Time"],
-                                    "y": data2["Temperature"],
-                                    "type": "lines",
-                                    "hovertemplate": "°C %{y:.2f}"
-                                                       "<extra></extra>",
-                                },
-                            ],
-                            "layout": {
-                                "title": {
-                                    "text": "Temperature for %s" %(data2.Date[1]),
-                                    "x": 0.05,
-                                    "xanchor": "left",
-                                },
-                                "xaxis": {"fixedrange": True, "title": "Time (GMT)",},
-                                "yaxis": {"fixedrange": True, "title": "Temperature (°C)",},
-                                "colorway": ["#E12D39"],
                             },
                         },
                     ),
