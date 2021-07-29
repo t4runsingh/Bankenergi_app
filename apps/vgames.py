@@ -56,7 +56,7 @@ def json_to_dataframe(data_in):
 
     return pandas.DataFrame(flatten_json(data_in))
 
-with open("/content/carbon_intensity.json") as json_file:
+with open(os.getcwd() + r'/carbon_intensity.json') as json_file:
     json_data = json.load(json_file)
 
 df = json_to_dataframe(json_data)
