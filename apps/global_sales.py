@@ -61,7 +61,7 @@ df = json_to_dataframe(json_data)
 df.drop(['location.name', 'location.country', 'location.region', 'location.lat', 'location.lon','location.tz_id', 'location.localtime_epoch', 'location.localtime', 'current.uv'], inplace=True, axis=1)
 df.rename(columns = {'forecast.forecastday.hour.time':'Date_Time', 'forecast.forecastday.hour.temp_c':'Temperature'}, inplace = True)
 df.to_csv('test.csv', mode='w', index=False)
-Data = pd.read_csv('/content/test.csv', parse_dates=['Date_Time'], infer_datetime_format=True)
+Data = pd.read_csv(os.getcwd() + r'/test.csv', parse_dates=['Date_Time'], infer_datetime_format=True)
 Data['Date'] = Data.Date_Time.dt.date
 Data['Time'] = Data.Date_Time.dt.time
 Data.drop(['Date_Time'], inplace=True, axis=1)
@@ -100,7 +100,7 @@ df.to_csv('demand.csv', index=False)
 
 
 data = pd.read_csv(os.getcwd() + r'/demand.csv')
-data2 =pd.read_csv("/content/weather.csv")
+data2 =pd.read_csv(os.getcwd() + r'/weather.csv')
 
 
 external_stylesheets = [
