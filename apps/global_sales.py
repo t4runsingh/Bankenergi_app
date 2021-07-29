@@ -48,7 +48,7 @@ df.to_csv('demand.csv', index=False)
 
 
 data = pd.read_csv(os.getcwd() + r'/demand.csv')
-data2 =pd.read_csv(os.getcwd() + r'/weather.csv')
+
 
 
 external_stylesheets = [
