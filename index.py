@@ -9,7 +9,7 @@ from app import app
 from app import server
 
 # Connect to your app pages
-from apps import vgames, global_sales, solar
+from apps import vgames, global_sales, solar,temp
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -42,6 +42,7 @@ sidebar = html.Div(
                 dbc.NavLink("Carbon Intensity", href="/apps/vgames", active="exact"),
                 dbc.NavLink("Elexon Flex Market", href="/apps/global_sales", active="exact"),
                 dbc.NavLink("Solar Production", href="/apps/solar", active="exact"),
+                dbc.NavLink("Temperature Report", href="/apps/temp", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -64,7 +65,9 @@ def render_page_content(pathname):
     elif pathname == "/apps/global_sales":
         return global_sales.layout
     elif pathname == "/apps/solar":
-        return solar.layout    
+        return solar.layout
+    elif pathname == "/apps/temp":
+        return temp.layout        
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [
