@@ -54,7 +54,7 @@ def json_to_dataframe(data_in):
 
     return pandas.DataFrame(flatten_json(data_in))
 
-with open("/content/weather.json") as json_file:
+with open(os.getcwd() + r'/weather.json') as json_file:
     json_data = json.load(json_file)
 
 df = json_to_dataframe(json_data)
@@ -72,7 +72,7 @@ r = requests.get(url, allow_redirects=True)
 open('demand.xml', 'wb').write(r.content)
 
 # Open XML file
-file = open("/content/demand.xml", 'r')
+file = open(os.getcwd() + r'/demand.xml', 'r')
   
 # Read the contents of that file
 contents = file.read()
