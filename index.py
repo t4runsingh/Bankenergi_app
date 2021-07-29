@@ -33,7 +33,8 @@ CONTENT_STYLE = {
 
 sidebar = html.Div(
     [
-        html.H3("BankEnergi",style={'fontSize': 25, 'textAlign': 'center', 'color' : '#ffffff'}),
+        #html.H3("BankEnergi",style={'fontSize': 25, 'textAlign': 'center', 'color' : '#ffffff'}),
+        html.Img(src=app.get_asset_url('bankenergi.png')),
         html.Hr(),
         dbc.Nav(
             [
